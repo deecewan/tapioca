@@ -115,8 +115,13 @@ module Tapioca
 
           if @auto_strictness
             say("")
-            update_gem_rbis_strictnesses([], gem_dir: @gem_dir, dsl_dir: @outpath.to_s)
-            say("")
+            validate_rbi_files(
+              command: default_command(:dsl, @requested_constants.join(" ")),
+              gem_dir: @gem_dir,
+              dsl_dir: @outpath.to_s,
+              auto_strictness: @auto_strictness,
+              compilers: Runtime::Reflection.descendants_of(Tapioca::Dsl::Compiler)
+            )
           end
 
           say("All operations performed in working directory.", [:green, :bold])
